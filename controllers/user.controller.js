@@ -1,7 +1,7 @@
 const DB = require("../models/index");
 const bcrypt = require("bcrypt");
 const generateToken = require("../utils/jwtTokenHandler");
-const { sendOTPByEmail, generateOTP } = require("../helper/helper");
+const { sendOTPByEmail, generateOTP } = require("../helper/email");
 const fs = require("fs");
 const path = require("path");
 const { Op } = require("sequelize");
@@ -41,8 +41,6 @@ const signUpUser = async (req, res) => {
         otp,
         otp_created_at: new Date(),
         otp_type: "signup",
-        otp_verified: true,
-        is_account_setup: true,
         password,
       },
       { transaction }
