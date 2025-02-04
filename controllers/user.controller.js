@@ -1,4 +1,4 @@
-const DB = require("../models/index");
+const DB = require("../config/db");
 const bcrypt = require("bcrypt");
 const generateToken = require("../utils/jwtTokenHandler");
 const { sendOTPByEmail, generateOTP } = require("../helper/email");
@@ -61,8 +61,8 @@ const signUpUser = async (req, res) => {
     );
 
     const token = generateToken({
-      userId: user.id,
-      tokenId: tokenRecord.id,
+      userId: user.user_id,
+      tokenId: tokenRecord.token_id,
       tokenVersion: tokenRecord.tokenVersion,
     });
 
@@ -115,12 +115,11 @@ const loginUser = async (req, res) => {
       otp_created_at: new Date(),
       otp_type: "login",
       otp_verified: true,
-      is_account_setup: true,
     });
     await user.save();
 
     let tokenRecord = await DB.Token.findOne({
-      where: { device_id, userId: user.id },
+      where: { device_id, userId: user.user_id },
     });
 
     if (tokenRecord) {
@@ -141,8 +140,8 @@ const loginUser = async (req, res) => {
     }
 
     const token = generateToken({
-      userId: user.id,
-      tokenId: tokenRecord.id,
+      userId: user.user_id,
+      tokenId: tokenRecord.token_id,
       tokenVersion: tokenRecord.tokenVersion,
     });
 
@@ -332,21 +331,6 @@ const verifyOtpForPasswordReset = async (req, res) => {
   const { email, otp } = req.body;
 
   try {
-    // const user = await DB.User.findOne({ where: { email } });
-
-    // if (!user) {
-    //   return res
-    //     .status(404)
-    //     .json({ success: false, message: "User not found" });
-    // }
-
-    // if (user.otp != otp || user.otp_type !== "forgot_password") {
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: "OTP Invalid. Please enter valid OTP",
-    //   });
-    // }
-
     const user = await DB.User.findOne({
       where: {
         email,
@@ -664,3 +648,37 @@ module.exports = {
   getUserProfile,
   deleteUserAccount,
 };
+
+
+
+
+
+// let { profile_image } = req.files;
+
+// try {
+//     var number = phoneUtil.parse(req.body.mobilenumber, req.body.iso_code);
+// } catch {
+//     return res.status(400).json({ Status: 0, message: "Number or ISO code not matched" });
+// }
+
+// const isValid = phoneUtil.isValidNumber(number);
+// if (!isValid) return res.status(400).json({ Status: 0, message: "Phone number is not correct" });
+
+// const isCorrectISO = phoneUtil.getRegionCodeForNumber(number) === req.body.iso_code;
+// if (!isCorrectISO) return res.status(400).json({ Status: 0, message: "ISO CODE does not match country code" });
+
+
+// const validation = await validateFiles(profile_image, ["jpg", "jpeg", "png", "webp"], 10 * 1024 * 1024);
+// if (!validation.valid) return res.status(400).json({ Status: 0, message: validation.message });
+
+// const ext = profile_image[0].originalname.split(".").pop();
+// const imageUrlMedia = profile_image[0].filename;
+// const imageUrlWithExt = `${profile_image[0].filename}.${ext}`;
+
+// // Rename the file with the extension
+// await fs.rename(
+//     `uploads/profile_image/${imageUrlMedia}`,
+//     `uploads/profile_image/${imageUrlWithExt}`
+// );
+
+// const imageurl = `uploads/profile_image/${imageUrlWithExt}`;

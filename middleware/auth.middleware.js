@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { User, Token } = require("../models/index");
+const { User, Token } = require("../config/db");
 require("dotenv").config();
 
 const verifyToken = async (req, res, next) => {
@@ -23,7 +23,7 @@ const verifyToken = async (req, res, next) => {
 
     const decodedToken = jwt.verify(token, process.env.accessKey);
     const { userId, tokenId, tokenVersion } = decodedToken;
-    
+
     if (!userId || !tokenId || !tokenVersion) {
       return res
         .status(401)

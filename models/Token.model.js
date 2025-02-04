@@ -2,19 +2,29 @@ const Token = (sequelize, DataTypes) => {
   const Token = sequelize.define(
     "Token",
     {
-      id: {
+      token_id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
+      },
+      user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'tbl_user',
+          key: 'user_id',
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       },
       device_id: {
         type: DataTypes.STRING,
         allowNull: false,
       },
       device_type: {
-        type: DataTypes.ENUM("Android", "ios"),
+        type: DataTypes.ENUM("Android", "ios", "Web"),
         allowNull: false,
-        validate: { isIn: [["Android", "ios"]] },
+        validate: { isIn: [["Android", "ios", "Web"]] },
       },
       device_token: {
         type: DataTypes.STRING,
@@ -31,15 +41,6 @@ const Token = (sequelize, DataTypes) => {
       tableName: "tbl_token",
     }
   );
-
-  Token.associate = (models) => {
-    Token.belongsTo(models.User, {
-      foreignKey: "userId",
-      as: "user",
-      onDelete: "CASCADE",
-      onUpdate: "CASCADE",
-    });
-  };
   return Token
 };
 

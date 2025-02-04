@@ -4,7 +4,7 @@ const User = (sequelize, DataTypes) => {
   const User = sequelize.define(
     "User",
     {
-      id: {
+      user_id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
@@ -77,14 +77,6 @@ const User = (sequelize, DataTypes) => {
     }
   );
 
-  User.associate = (models) => {
-    User.hasMany(models.Token, {
-      foreignKey: "userId",
-      as: "tokens",
-      onDelete: "CASCADE",
-      onUpdate: "CASCADE",
-    });
-  };
   return User;
 };
 
