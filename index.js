@@ -1,21 +1,32 @@
 const express = require("express");
 var morgan = require("morgan");
-const db = require("./models/index");
+const db = require("./config/db");
 const bodyParser = require("body-parser");
 const routes = require("./routes/index");
 const app = express();
+const http = require("http");
+const { setIO } = require("./helper/io_setup")
+const { socketConfig } = require("./helper/eventHandlers")
 
 app.use(express.json());
-app.use(express.static("public"));
+app.use("uploads/", express.static("uploads"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 
 app.use("/api", routes);
 
+app.get('/', (req, res) => {
+  res.status(200).send('server is running')
+})
+
+let httpServer = http.createServer(app);
+let io = setIO(httpServer);
+socketConfig(io);
+
 const port = 5000;
-app.listen(port, async () => {
+httpServer.listen(port, async () => {
   try {
-    await db.sequelize.sync({ alert: true, force: false });
+    // await db.sequelize.sync({ alert: true, force: true });
     console.log(
       "------------>>>>> Model has been synced successfully. ------------>>>>>"
     );
