@@ -9,53 +9,47 @@ const User = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      firstName: {
+      firstname: {
         type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notNull: {
-            msg: "Please enter your firstName",
-          },
-        },
+        allowNull: true,
       },
-      lastName: {
+      lastname: {
         type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notNull: {
-            msg: "Please enter your lastName",
-          },
-        },
+        allowNull: true,
       },
       email: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       password: {
         type: DataTypes.STRING,
-        allowNull: false,
-      },
-      profile: {
-        type: DataTypes.STRING,
-      },
-      otp: {
-        type: DataTypes.INTEGER,
-      },
-      otp_created_at: {
-        type: DataTypes.DATE,
         allowNull: true,
       },
-      otp_type: {
+      profile_image: {
         type: DataTypes.STRING,
       },
-      otp_verified: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-      },
+      // otp: {
+      //   type: DataTypes.INTEGER,
+      // },
+      // otp_created_at: {
+      //   type: DataTypes.DATE,
+      //   allowNull: true,
+      // },
+      // otp_type: {
+      //   type: DataTypes.STRING,
+      // },
+      // otp_verified: {
+      //   type: DataTypes.BOOLEAN,
+      //   defaultValue: false,
+      // },
       is_account_setup: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
+      is_verified:{
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      }
     },
     {
       timestamps: true,

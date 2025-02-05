@@ -13,7 +13,7 @@ app.use("uploads/", express.static("uploads"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 
-app.use("/api", routes);
+app.use(routes);
 
 app.get('/', (req, res) => {
   res.status(200).send('server is running')

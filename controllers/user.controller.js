@@ -1,5 +1,6 @@
 const DB = require("../config/db");
 const bcrypt = require("bcrypt");
+const redisClient = require('../config/redisConfig');
 const generateToken = require("../utils/jwtTokenHandler");
 const { sendOTPByEmail, generateOTP } = require("../helper/email");
 const fs = require("fs");

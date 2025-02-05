@@ -6,10 +6,11 @@ const redisClient = new Redis({
     port: process.env.REDIS_PORT, // or your custom port
     db: process.env.REDISDB,
     retryStrategy: (times) => {
+        console.log(times);
+        
         return 1000;
     },
 });
-
 redisClient.on('error', (err) => {
     process.exit(1);
 });
